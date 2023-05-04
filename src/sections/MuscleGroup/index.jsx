@@ -1,12 +1,11 @@
+import { useContext } from 'react';
+import { ADD_ACTIVE_EXERCISE } from '../../context/const';
+import { ExerciseContext, listExer } from '../../context/ExerciseContext';
+
 /* eslint-disable react/prop-types */
-const MuscleGroup = ({
-  activeList,
-  listExer,
-  setExersiceChoose,
-  exersiceChoose,
-  setObj,
-  exobj,
-}) => {
+const MuscleGroup = ({ activeList, setExersiceChoose, exersiceChoose }) => {
+  const { activeExercise, dispatch } = useContext(ExerciseContext);
+
   return (
     <>
       <div className='flex w-full flex-col justify-center items-center'>
@@ -41,11 +40,10 @@ const MuscleGroup = ({
                       className=' cursor-pointer m-3 bg-green-200 rounded-xl p-3'
                       key={Math.random()}
                       onClick={() => {
-                        setObj(() => ({
-                          ...exobj,
-                          name,
-                          image,
-                        }));
+                        dispatch({
+                          type: ADD_ACTIVE_EXERCISE,
+                          payload: { ...activeExercise, name, image },
+                        });
                       }}
                     >
                       {name}

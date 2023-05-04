@@ -1,23 +1,48 @@
 import { useContext } from 'react';
+import {
+  ADD_ACTIVE_EXERCISE,
+  ADD_EXERCISE,
+  DELETE_ACTIVE_EXERCISE,
+} from '../../context/const';
 import { ExerciseContext } from '../../context/ExerciseContext';
 
 /* eslint-disable react/prop-types */
-const WorkoutPanel = ({ exobj, handler, setObj }) => {
-  const { whole } = useContext(ExerciseContext);
-  const { dispatch } = useContext(ExerciseContext);
+const WorkoutPanel = () => {
+  const { whole, dispatch, activeExercise } = useContext(ExerciseContext);
+  const handler = (e, type) => {
+    if (type === 'reps') {
+      dispatch({
+        type: ADD_ACTIVE_EXERCISE,
+        payload: {
+          ...activeExercise,
+          reps: e.target.value,
+        },
+      });
+    }
+    if (type === 'weight') {
+      dispatch({
+        type: ADD_ACTIVE_EXERCISE,
+        payload: {
+          ...activeExercise,
+          weight: e.target.value,
+        },
+      });
+    }
+  };
 
   const addHandler = () => {
-    const { name, weight, reps, image } = { ...exobj };
+    const { name, weight, reps, image } = { ...activeExercise };
     if (!name || !reps || !weight) {
       return;
     }
     dispatch({
-      type: 'ADD',
+      type: ADD_EXERCISE,
       payload: { name, weight, reps, image },
     });
-    setObj({ name: '', reps: '', weight: '', image: '' });
+    dispatch({
+      type: DELETE_ACTIVE_EXERCISE,
+    });
   };
-  console.log(whole);
   return (
     <>
       <div className='min-w-[700px] h-screen p-3 '>
@@ -25,14 +50,14 @@ const WorkoutPanel = ({ exobj, handler, setObj }) => {
         <div className='flex bg-indigo-800 p-5 rounded-2xl text-white'>
           <div className='w-2/3'>
             <h2 className='text-xl uppercase'>
-              {`Your exersice: ${exobj.name}`}
+              {`Your exersice: ${activeExercise.name}`}
             </h2>
             <div className='py-3 my-2'>
               <div>
                 <p className='uppercase py-2'>reps:</p>
                 <input
                   onChange={(e) => handler(e, 'reps')}
-                  value={exobj.reps}
+                  value={activeExercise.reps}
                   type='text'
                   name=''
                   id=''
@@ -42,7 +67,7 @@ const WorkoutPanel = ({ exobj, handler, setObj }) => {
                 <p className='uppercase py-2'>weight:</p>
                 <input
                   onChange={(e) => handler(e, 'weight')}
-                  value={exobj.weight}
+                  value={activeExercise.weight}
                   type='text'
                 />
               </div>
@@ -55,8 +80,8 @@ const WorkoutPanel = ({ exobj, handler, setObj }) => {
             </button>
           </div>
           <div className='w-full flex items-center justify-center'>
-            {exobj.image && (
-              <img className='w-24 h-24' src={exobj.image} alt='' />
+            {activeExercise.image && (
+              <img className='w-24 h-24' src={activeExercise.image} alt='' />
             )}
           </div>
         </div>
