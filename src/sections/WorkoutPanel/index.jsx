@@ -1,5 +1,23 @@
+import { useContext } from 'react';
+import { ExerciseContext } from '../../context/ExerciseContext';
+
 /* eslint-disable react/prop-types */
-const WorkoutPanel = ({ exobj, whole, handler, addHandler }) => {
+const WorkoutPanel = ({ exobj, handler, setObj }) => {
+  const { whole } = useContext(ExerciseContext);
+  const { dispatch } = useContext(ExerciseContext);
+
+  const addHandler = () => {
+    const { name, weight, reps, image } = { ...exobj };
+    if (!name || !reps || !weight) {
+      return;
+    }
+    dispatch({
+      type: 'ADD',
+      payload: { name, weight, reps, image },
+    });
+    setObj({ name: '', reps: '', weight: '', image: '' });
+  };
+  console.log(whole);
   return (
     <>
       <div className='min-w-[700px] h-screen p-3 '>

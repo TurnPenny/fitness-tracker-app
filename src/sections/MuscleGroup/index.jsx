@@ -9,7 +9,6 @@ const MuscleGroup = ({
 }) => {
   return (
     <>
-      {/* left part */}
       <div className='flex w-full flex-col justify-center items-center'>
         <h2 className='uppercase text-3xl m-2'>Choose muscle group</h2>
         {activeList && (
